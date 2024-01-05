@@ -19,12 +19,23 @@ cloudinary.config({
           })
           // file has been uploaded successfull
           //console.log("file is uploaded on cloudinary ", response.url);
-          fs.unlinkSync(localFilePath)
+          //fs.unlinkSync(localFilePath)
+          if (fs.existsSync(localFilePath)) {
+            fs.unlinkSync(localFilePath);
+        }
+
           return response;
   
       } catch (error) {
-          fs.unlinkSync(localFilePath) // remove the locally saved temporary file as the upload operation got failed
-          return null;
+        //   fs.unlinkSync(localFilePath) // remove the locally saved temporary file as the upload operation got failed
+          //   return null;
+          console.error("Error uploading to Cloudinary:", error.message);
+
+          if (fs.existsSync(localFilePath)) {
+            fs.unlinkSync(localFilePath);
+        }
+
+        return null;
       }
   }
   
